@@ -39,6 +39,25 @@ class evamaria(Client):
             sleep_threshold=60
         )
 
+class auth:
+    def __init__(self):
+        f = open(f"plugins/auth.json")
+        data = json.load(f)
+        self.auth_channel = data['auth_channel']
+    
+    def __str__(self):
+        return self.auth_channel
+
+    def change(self, lang):
+        os.remove(f"plugins/auth.json")
+        with open(f"plugins/auth.json", 'w+') as file:
+            data = {"auth_channel" : lang}
+            json.dump(data, file)
+            self.auth_channel = lang
+            
+        
+auth_channel = auth()
+
 # Bot information
 SESSION = environ.get('SESSION', 'Media_search')
 API_ID = int(environ.get("API_ID", "18674011"))
@@ -59,7 +78,7 @@ MELCOW_VID = environ.get('MELCOW_VID',"")
 
 
 # Admins, Channels & Users
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '1099497360 5583768837 6446790411').split()]
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '1099497360 5583768837 6446790411 385686409').split()]
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1001477932100 -1001975909776').split()]
 auth_users = [int(user) if id_pattern.search(user) else user for user in environ.get('AUTH_USERS', '').split()]
 AUTH_USERS = (auth_users + ADMINS) if auth_users else []
@@ -70,8 +89,8 @@ support_chat_id = environ.get('SUPPORT_CHAT_ID')
 TMP_DOWNLOAD_DIRECTORY = environ.get("TMP_DOWNLOAD_DIRECTORY", "./DOWNLOADS/")
 
 # FSUB
-auth_channel = environ.get('AUTH_CHANNEL', "-1001933736394")
-AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
+# auth_channel = environ.get('AUTH_CHANNEL', "-1001933736394")
+AUTH_CHANNEL = str(auth_channel)
 
 # Command
 COMMAND_HAND_LER = environ.get("COMMAND_HAND_LER", "/")
