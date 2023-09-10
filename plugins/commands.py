@@ -9,7 +9,7 @@ from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from database.ia_filterdb import Media, get_file_details, unpack_new_file_id
 from database.users_chats_db import db
-from info import CHANNELS, ADMINS, AUTH_CHANNEL, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, MSG_ALRT, MAIN_CHANNEL
+from info import auth,CHANNELS, ADMINS, AUTH_CHANNEL, LOG_CHANNEL, PICS, BATCH_FILE_CAPTION, CUSTOM_FILE_CAPTION, PROTECT_CONTENT, MSG_ALRT, MAIN_CHANNEL,auth_channel
 from utils import get_settings, get_size, is_subscribed, save_group_settings, temp
 from database.connections_mdb import active_connection
 import re
@@ -640,3 +640,19 @@ async def restart(b, m):
     except:
         pass
     os.execl(sys.executable, sys.executable, "bot.py")
+
+def extract_arg(arg):
+    return arg.split()[1:]
+
+@Client.on_message(filters.command('andii'))
+async def auth(bot, message):
+    pp = extract_arg(message.text)
+    await message.reply(f'Old auth channel : {AUTH_CHANNEL}', quote=True)
+    auth_channel.change(pp[0])
+    await message.reply(f'New auth channel : {AUTH_CHANNEL}', quote=True)
+    
+    
+    
+@Client.on_message(filters.command('andiiy'))
+async def auth1(bot, message):
+    await message.reply(f'Currrent auth channel : {AUTH_CHANNEL}', quote=True)
